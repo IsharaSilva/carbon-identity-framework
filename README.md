@@ -1,4 +1,3 @@
-hi
 # carbon-identity-framework
 
 |  Branch | Build Status | Travis CI Status |
