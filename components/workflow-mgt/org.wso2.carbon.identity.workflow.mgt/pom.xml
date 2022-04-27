@@ -51,6 +51,11 @@
             <groupId>org.wso2.orbit.javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>WorkflowEngineDefault</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

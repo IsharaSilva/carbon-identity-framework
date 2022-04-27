@@ -22,6 +22,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.context.CarbonContext;
+import org.wso2.carbon.identity.workflow.engine.DefaultWorkflowEngineImpl;
+import org.wso2.carbon.identity.workflow.engine.WorkflowEngine;
+import org.wso2.carbon.identity.workflow.engine.model.WorkflowDefinition;
 import org.wso2.carbon.identity.workflow.mgt.bean.Entity;
 import org.wso2.carbon.identity.workflow.mgt.bean.Parameter;
 import org.wso2.carbon.identity.workflow.mgt.bean.Workflow;
@@ -330,6 +333,7 @@ public class WorkflowManagementServiceImpl implements WorkflowManagementService 
     public void addWorkflow(Workflow workflow,
                             List<Parameter> parameterList, int tenantId) throws WorkflowException {
 
+/*
         List<WorkflowListener> workflowListenerList =
                 WorkflowServiceDataHolder.getInstance().getWorkflowListenerList();
         for (WorkflowListener workflowListener : workflowListenerList) {
@@ -379,6 +383,13 @@ public class WorkflowManagementServiceImpl implements WorkflowManagementService 
                 workflowListener.doPostAddWorkflow(workflow, parameterList, tenantId);
             }
         }
+*/
+        AbstractWorkflow abstractWorkflow = null;
+        //deploying the template
+        abstractWorkflow.deploy(parameterList);
+
+        WorkflowEngine workflowEngine = new DefaultWorkflowEngineImpl();
+        workflowEngine.addDefinition(workflow, tenantId);
 
     }
 
