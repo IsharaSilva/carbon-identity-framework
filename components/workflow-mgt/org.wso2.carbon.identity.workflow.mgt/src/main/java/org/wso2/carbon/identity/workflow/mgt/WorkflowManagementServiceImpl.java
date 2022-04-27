@@ -64,6 +64,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * WorkflowService class provides all the common functionality for the basic workflows.
@@ -96,7 +97,8 @@ public class WorkflowManagementServiceImpl implements WorkflowManagementService 
         }
         return workflowBean;*/
         int tenantId = IdentityTenantUtil.getTenantId(IdentityTenantUtil.getTenantDomainFromContext());
-        return workflowEngine.getDefinition(workflowId, tenantId);
+        Optional<WorkflowDefinition> definition = workflowEngine.getDefinition(workflowId, tenantId);
+        return (Workflow) definition;
     }
 
     @Override
