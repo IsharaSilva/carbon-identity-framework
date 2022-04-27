@@ -389,7 +389,9 @@ public class WorkflowManagementServiceImpl implements WorkflowManagementService 
         abstractWorkflow.deploy(parameterList);
 
         WorkflowEngine workflowEngine = new DefaultWorkflowEngineImpl();
-        workflowEngine.addDefinition(workflow, tenantId);
+        String wfName;
+        WorkflowDefinition workflowDefinition=new WorkflowDefinition(String wfName, )
+        workflowEngine.addDefinition(workflowDefinition, tenantId);
 
     }
 
