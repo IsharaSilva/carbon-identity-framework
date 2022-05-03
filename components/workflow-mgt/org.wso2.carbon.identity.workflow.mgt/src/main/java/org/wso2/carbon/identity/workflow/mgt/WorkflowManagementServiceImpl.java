@@ -49,6 +49,7 @@ import org.wso2.carbon.identity.workflow.mgt.internal.WorkflowServiceDataHolder;
 import org.wso2.carbon.identity.workflow.mgt.listener.WorkflowListener;
 import org.wso2.carbon.identity.workflow.mgt.template.AbstractTemplate;
 import org.wso2.carbon.identity.workflow.mgt.util.WFConstant;
+import org.wso2.carbon.identity.workflow.mgt.util.WorkflowManagementUtil;
 import org.wso2.carbon.identity.workflow.mgt.util.WorkflowRequestStatus;
 import org.wso2.carbon.identity.workflow.mgt.workflow.AbstractWorkflow;
 
@@ -82,7 +83,7 @@ public class WorkflowManagementServiceImpl implements WorkflowManagementService 
     WorkflowEngine workflowEngine = new DefaultWorkflowEngineImpl();
     @Override
     public Workflow getWorkflow(String workflowId) throws WorkflowException {
-       /* List<WorkflowListener> workflowListenerList =
+        List<WorkflowListener> workflowListenerList =
                 WorkflowServiceDataHolder.getInstance().getWorkflowListenerList();
         for (WorkflowListener workflowListener : workflowListenerList) {
             if (workflowListener.isEnable()) {
@@ -95,10 +96,11 @@ public class WorkflowManagementServiceImpl implements WorkflowManagementService 
                 workflowListener.doPostGetWorkflow(workflowId, workflowBean);
             }
         }
-        return workflowBean;*/
-        int tenantId = IdentityTenantUtil.getTenantId(IdentityTenantUtil.getTenantDomainFromContext());
-        Optional<WorkflowDefinition> definition = workflowEngine.getDefinition(workflowId, tenantId);
-        return (Workflow) definition;
+        return workflowBean;
+
+       /* int tenantId = IdentityTenantUtil.getTenantId(IdentityTenantUtil.getTenantDomainFromContext());
+        workflowEngine.getDefinition(workflowId, tenantId);
+        return workflow;*/
     }
 
     @Override
@@ -337,7 +339,6 @@ public class WorkflowManagementServiceImpl implements WorkflowManagementService 
     public void addWorkflow(Workflow workflow,
                             List<Parameter> parameterList, int tenantId) throws WorkflowException {
 
-/*
         List<WorkflowListener> workflowListenerList =
                 WorkflowServiceDataHolder.getInstance().getWorkflowListenerList();
         for (WorkflowListener workflowListener : workflowListenerList) {
@@ -387,14 +388,29 @@ public class WorkflowManagementServiceImpl implements WorkflowManagementService 
                 workflowListener.doPostAddWorkflow(workflow, parameterList, tenantId);
             }
         }
-*/
-        AbstractWorkflow abstractWorkflow = null;
+      /*  AbstractWorkflow abstractWorkflow = null;
         //deploying the template
         abstractWorkflow.deploy(parameterList);
 
-        WorkflowDefinition workflowDefinition=new WorkflowDefinition(null, null, null, null);
-        workflowEngine.addDefinition(workflowDefinition, tenantId);
+        String wfName = workflow.getWorkflowName();
+        String wfDescription = workflow.getWorkflowDescription();
+        final String[] approvalSubject = new String[1];
+        String approvalDescription;
 
+        parameterList.forEach(parameter -> {
+            if (parameter.getParamName().equals("HTSubject")) {
+                approvalSubject[0] = parameter.getParamValue();
+            }
+        });
+        parameterList.forEach(parameter -> {
+            if (parameter.getParamName().equals("HTDescription")) {
+                approvalDescription = parameter.getParamValue();
+            }
+        });
+
+        WorkflowDefinition workflowDefinition = new WorkflowDefinition(wfName, wfDescription, approvalSubject[0],
+                approvalDescription);
+        workflowEngine.addDefinition(workflowDefinition, tenantId);*/
     }
 
     @Override
@@ -444,7 +460,7 @@ public class WorkflowManagementServiceImpl implements WorkflowManagementService 
     @Override
     public List<Workflow> listWorkflows(int tenantId) throws WorkflowException {
 
-    /*    List<WorkflowListener> workflowListenerList =
+        List<WorkflowListener> workflowListenerList =
                 WorkflowServiceDataHolder.getInstance().getWorkflowListenerList();
         for (WorkflowListener workflowListener : workflowListenerList) {
             if (workflowListener.isEnable()) {
@@ -458,14 +474,14 @@ public class WorkflowManagementServiceImpl implements WorkflowManagementService 
             }
         }
 
-        return workflowList;*/
-       return Collections.singletonList((Workflow) workflowEngine.listDefinitions(null, 0, 0, tenantId));
+        return workflowList;
+      // return Collections.singletonList((Workflow) workflowEngine.listDefinitions(null, 0, 0, tenantId));
 
     }
 
     @Override
     public void removeWorkflow(String workflowId) throws WorkflowException {
-       /* Workflow workflow = workflowDAO.getWorkflow(workflowId);
+        Workflow workflow = workflowDAO.getWorkflow(workflowId);
         //Deleting the role that is created for per workflow
         if (workflow != null) {
 
@@ -488,10 +504,10 @@ public class WorkflowManagementServiceImpl implements WorkflowManagementService 
                 }
             }
 
-        }*/
-       // int tenantId = IdentityTenantUtil.getTenantId(IdentityTenantUtil.getTenantDomainFromContext());
+        }
+       /* int tenantId = IdentityTenantUtil.getTenantId(IdentityTenantUtil.getTenantDomainFromContext());
         int tenantId = 0;
-        workflowEngine.deleteDefinition(workflowId, tenantId);
+        workflowEngine.deleteDefinition(workflowId, tenantId);*/
     }
 
     /**
