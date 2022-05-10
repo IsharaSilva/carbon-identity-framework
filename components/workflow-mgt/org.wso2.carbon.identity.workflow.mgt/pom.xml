@@ -55,10 +55,10 @@
             <groupId>org.example</groupId>
             <artifactId>WorkflowEngineDefault</artifactId>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.wso2.carbon.identity.framework</groupId>
             <artifactId>org.wso2.carbon.identity.workflow.mgt</artifactId>
-        </dependency>
+        </dependency>-->
 
     </dependencies>
 
@@ -115,6 +115,8 @@
                         </Import-Package>
                         <Export-Package>
                             !org.wso2.carbon.identity.workflow.mgt.internal,
+                            org.wso2.carbon.identity.workflow.mgt.workflow,
+                            org.wso2.carbon.identity.workflow.mgt,
                             org.wso2.carbon.identity.workflow.mgt.*; version="${carbon.identity.package.export.version}"
                         </Export-Package>
                     </instructions>
