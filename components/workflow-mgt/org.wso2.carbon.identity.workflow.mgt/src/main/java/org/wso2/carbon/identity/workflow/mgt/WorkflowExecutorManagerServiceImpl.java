@@ -31,4 +31,11 @@ public class WorkflowExecutorManagerServiceImpl implements WorkflowExecutorManag
         WorkflowRequestAssociationDAO workflowRequestAssociationDAO = new WorkflowRequestAssociationDAO();
         return workflowRequestAssociationDAO.getWorkflowAssociationsForRequest(eventId, tenantId);
     }
+
+    @Override
+    public List<String> getWorkflowStatesOfRequest(String requestId) throws InternalWorkflowException {
+
+        WorkflowRequestAssociationDAO workflowRequestAssociationDAO = new WorkflowRequestAssociationDAO();
+        return workflowRequestAssociationDAO.getWorkflowStatesOfRequest(requestId);
+    }
 }
