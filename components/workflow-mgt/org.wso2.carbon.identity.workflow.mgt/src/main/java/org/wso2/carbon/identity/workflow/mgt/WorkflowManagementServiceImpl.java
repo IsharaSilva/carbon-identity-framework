@@ -451,26 +451,32 @@ public class WorkflowManagementServiceImpl implements WorkflowManagementService 
         Workflow workflow = workflowDAO.getWorkflow(workflowId);
         //Deleting the role that is created for per workflow
         if (workflow != null) {
-
-            List<WorkflowListener> workflowListenerList =
-                    WorkflowServiceDataHolder.getInstance().getWorkflowListenerList();
-
-            for (WorkflowListener workflowListener : workflowListenerList) {
-                if (workflowListener.isEnable()) {
-                    workflowListener.doPreDeleteWorkflow(workflow);
-                }
-            }
-
+            String implId=workflow.getWorkflowImplId();
+        if (implId.equals("workflowImplSimple")) {
+            workflowDAO.removeWorkflowFromImpl(workflowId);
             WorkflowManagementUtil.deleteWorkflowRole(StringUtils.deleteWhitespace(workflow.getWorkflowName()));
             workflowDAO.removeWorkflowParams(workflowId);
             workflowDAO.removeWorkflow(workflowId);
+        } else {
+    List<WorkflowListener> workflowListenerList =
+            WorkflowServiceDataHolder.getInstance().getWorkflowListenerList();
 
-            for (WorkflowListener workflowListener : workflowListenerList) {
-                if (workflowListener.isEnable()) {
-                    workflowListener.doPostDeleteWorkflow(workflow);
-                }
-            }
+    for (WorkflowListener workflowListener : workflowListenerList) {
+        if (workflowListener.isEnable()) {
+            workflowListener.doPreDeleteWorkflow(workflow);
+        }
+    }
 
+    WorkflowManagementUtil.deleteWorkflowRole(StringUtils.deleteWhitespace(workflow.getWorkflowName()));
+    workflowDAO.removeWorkflowParams(workflowId);
+    workflowDAO.removeWorkflow(workflowId);
+
+    for (WorkflowListener workflowListener : workflowListenerList) {
+        if (workflowListener.isEnable()) {
+            workflowListener.doPostDeleteWorkflow(workflow);
+        }
+    }
+}
         }
     }
 
